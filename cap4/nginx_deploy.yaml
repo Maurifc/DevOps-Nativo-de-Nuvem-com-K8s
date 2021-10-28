@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment # Nome do deployment
+  labels:
+    app: nginx_server 
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx_app # Nome do template a ser replicado. O seletor deve ser igual à label abaixo (linha 15)
+  template:
+    metadata:
+      labels:
+        app: nginx_app #Nome do template do pod
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
