@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: "2021-10-31T22:49:15Z"
+  generation: 1
+  name: cronjob-printadora
+  namespace: default
+  resourceVersion: "45273"
+  uid: 09bf291a-9976-44c5-b985-0ce3bfaf014e
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: print
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+          - image: busybox
+            imagePullPolicy: Always
+            name: print
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            command: ["/bin/sh", "-c"]                                         #Comando a ser executado na inicialização do container
+            args: 
+              - echo cheguei | nc 192.168.1.106 9999
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+  schedule: '*/1 * * * *'                                     # Agenda no formato cron do linux
+  successfulJobsHistoryLimit: 3                               # Máximo de pods "completed" que ficarão no histórico
+  suspend: false
+status: {}
