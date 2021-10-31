@@ -1,0 +1,7 @@
+#Namespace 'hello'
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: helloapp
+  labels:
+    name: helloapp

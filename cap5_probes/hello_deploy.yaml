@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mygoapp
+  labels:
+    app: goapp 
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: goapp
+  template:
+    metadata:
+      labels:
+        app: goapp
+    spec:
+      containers:
+      - name: hello
+        image: maurifc/myhello
+        ports:
+        - containerPort: 8888
+        resources:
+          requests:   #Recursos "mínimos"
+            memory: "100Mi"
+            cpu: "100m"
+          limits:     #Limite de recursos
+            memory: "200Mi"
+            cpu: "300m"
+        # livenessProbe:
+        #   httpGet:
+        #     path: /   # URL que deve retornar 2xx ou 3xx
+        #     port: 8888
+        #   initialDelaySeconds: 3  # Tempoo para aguardar a primeira verificacao, depois que o container é iniciado
+        #   periodSeconds: 3        # Intervalo de tempo entre verificacoes
+        readinessProbe:
+          httpGet:
+            path: /healthz   # URL que deve retornar 2xx ou 3xx
+            port: 8888
+          initialDelaySeconds: 3  # Tempoo para aguardar a primeira verificacao, depois que o container é iniciado
+          periodSeconds: 3        # Intervalo de tempo entre verificacoes
