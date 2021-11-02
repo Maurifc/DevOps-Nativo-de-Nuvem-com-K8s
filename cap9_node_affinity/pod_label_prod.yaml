@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-prod
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: envtype      # Só cria o pod se o nó contém uma label envtype com o valor prod ou production
+              operator: In
+              values:
+              - prod
+              - production
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+            - key: disktype     # Preferencialmente cria o pod em um nó que possua a label disktype = ssd
+              operator: In
+              values:
+              - ssd

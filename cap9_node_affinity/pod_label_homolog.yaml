@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-homolog
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: envtype      # Só cria o pod se o nó contém uma label envtype com o valor homolog ou test
+              operator: In
+              values:
+              - homolog
+              - test
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+            - key: disktype     # Preferencialmente cria o pod em um nó que possua a label disktype = ssd
+              operator: In
+              values:
+              - ssd
