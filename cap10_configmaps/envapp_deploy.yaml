@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: envapp
+  name: envapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: envapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: envapp
+    spec:
+      containers:
+      - image: maurifc/hello-env
+        name: hello-env
+        resources: {}
+        env:
+          - name: MSG                   #Nome da variável de ambiente que estará disponível no container
+            valueFrom:
+              configMapKeyRef:
+                name: www-configmap     #nome do configmap que se encontra a chave desejada
+                key: VALUE              #chave que será recuperada do configmap
+                                        # No fim das contas, podemos entender que MSG foi mapeada para VALUE. MSG = VALUE

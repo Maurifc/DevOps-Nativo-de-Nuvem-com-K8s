@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: envapp2
+  name: envapp2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: envapp2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: envapp2
+    spec:
+      containers:
+      - image: maurifc/hello-env2
+        name: hello-env
+        resources: {}
+        envFrom:                      #Dessa forma é possível importar todas as ENV do configmap sem especificar uma a uma
+          - configMapRef:
+              name: www-configmap     #Nome do config map
