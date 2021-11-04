@@ -1,3 +1,0 @@
-FROM busybox
-# COPY textfile.txt /app/
-ENTRYPOINT [ "cat", "/app/textfile.txt" ]

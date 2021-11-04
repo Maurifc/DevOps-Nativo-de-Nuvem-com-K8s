@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: app-configmap
 data:
-  file: |
-    conteudo do arquivo de texto
+  file: |                               #file pode ser qualquer coisa, desde que o referencie corretamente na hora de montar o volume. Tudo que ocorre depois do | é tratado como arquivo bruto
+    conteudo do arquivo de texto        

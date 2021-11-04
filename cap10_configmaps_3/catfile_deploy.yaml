@@ -21,14 +21,14 @@ spec:
       - image: maurifc/catfile
         name: catfile
         resources: {}
-        volumeMounts:
+        volumeMounts:                   # montamos um volume na pasta /app
           - mountPath: /app
-            name: text-file-volume
+            name: text-file-volume      # nome do volume a ser montado (deve ser igual ao da linha 29)
             readOnly: true
-      volumes:
-        - name: text-file-volume
+      volumes:                          # criamos um volume
+        - name: text-file-volume        # nome do volume
           configMap:
-            name: app-configmap
+            name: app-configmap         # nome do config map que contém os dados do volume
             items:
-            - key: file
-              path: textfile.txt
+            - key: file                 # nome do bloco de dados do configmap que será copiado para o volume
+              path: textfile.txt        # nome do arquivo final dentro do container
