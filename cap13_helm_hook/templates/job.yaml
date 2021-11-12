@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": post-install                      # Quando o hook será chamado. Nesse caso, após a instalação
+    "helm.sh/hook-weight": "-5"                       #Peso determina a ordem que os hooks de um mesmo tipo são executados. Quanto > peso > prioridade
+    "helm.sh/hook-delete-policy": hook-succeeded      #Política de deleção do job - nesse caso, só deleta se foi bem sucedido
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: post-install-job
+        image: "busybox"                                                # Imagem do container
+        command: ["wget", "192.168.1.108:9999", "-T", "1"]              # Comando a ser executado no container (deve retornar 0 para ser bem sucedido)
