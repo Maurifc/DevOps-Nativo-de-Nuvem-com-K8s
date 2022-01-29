@@ -1,0 +1,19 @@
+# Apply the soft_antiaffinity
+kubectl apply -f deploy_soft.yaml
+
+# Check if there are pending pods not scheduled (due the anti affinity)
+kubectl get pods
+
+# Use kubectl describe to check why the pod didn't schedule
+kubectl describe pod ...
+
+# Add more nodes to your cluster and check if pending pods are finally scheduled
+
+# Check where pods were scheduled using -o wide flag
+kubectl get pods -o wide
+
+# Scale to schedule new pods, if needed, to test the affinity
+kubectl scale deploy pod-affinity-demo --replicas 5
+
+# Check the different behavior when using hard instead of soft
+kubectl apply -f deploy_hard.yaml
