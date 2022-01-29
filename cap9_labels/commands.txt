@@ -1,0 +1,9 @@
+# Use --show-labels with 'kubectl get ...' to list resource's labels
+kubectl get deploy --show-labels
+kubectl get pods --show-labels
+
+# Filter pods by labels
+kubectl get pods -l version=1.1
+kubectl get pods -l component=app
+kubectl get pods -l component!=app
+kubectl get pods -l version notin ('1.1')

@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  label-demo
+  namespace: default
+
+  labels: # Deployment labels
+    app:  label-demo
+    env: prod
+    version: '1.0'
+spec:
+  selector:
+    matchLabels: # Selection labels (Service)
+      app: label-demo
+  replicas: 3
+  template:
+    metadata:
+      labels: # Pod Labels
+        app:  label-demo
+        version: '1.1'
+        component: app
+    spec:
+      containers:
+      - name:  label-demo
+        image:  nginx:latest
+
+---        
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  label-demo-2
+  namespace: default
+
+  labels: # Deployment labels
+    app:  label-demo
+    env: dev
+    version: '1.5'
+spec:
+  selector:
+    matchLabels: # Selection labels (Service)
+      app: label-demo
+  replicas: 3
+  template:
+    metadata:
+      labels: # Pod Labels
+        app:  label-demo
+        version: '1.5'
+        component: database
+    spec:
+      containers:
+      - name:  label-demo
+        image:  nginx:latest
+
+---        
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  label-demo-3
+  namespace: default
+
+  labels: # Deployment labels
+    app:  label-demo
+    env: dev
+    version: '1.5'
+spec:
+  selector:
+    matchLabels: # Selection labels (Service)
+      app: label-demo
+  replicas: 3
+  template:
+    metadata:
+      labels: # Pod Labels
+        app:  label-demo
+        version: '1.5'
+        component: app
+    spec:
+      containers:
+      - name:  label-demo
+        image:  nginx:latest
