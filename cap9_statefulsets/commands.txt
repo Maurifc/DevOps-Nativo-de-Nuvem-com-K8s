@@ -1,0 +1,10 @@
+# Check the endpoints
+kubectl get ep
+
+# Deploy a busybox at same namespaces as redis
+kubectl run busybox --image=busybox:1.28 --rm -it --restart=Never --command -
+
+# Check nslookup these names:
+nslookup redis-0.redis-svc.default.svc.cluster.local
+nslookup redis-1.redis-svc.default.svc.cluster.local
+nslookup redis-1.redis-svc.default.svc.cluster.local
