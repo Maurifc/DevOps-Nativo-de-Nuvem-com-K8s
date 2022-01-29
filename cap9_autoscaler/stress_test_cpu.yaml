@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: stress-test
+  name: stress-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stress-test
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: stress-test
+    spec:
+      containers:
+      - image: polinux/stress
+        name: stress
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "100Mi"
+        command: ["/bin/sh", "-c"]
+        args: 
+          - "stress -c 2 --vm 1 --vm-bytes 50M"
+
+---
+apiVersion: autoscaling/v2beta2 
+kind: HorizontalPodAutoscaler
+metadata:
+  name: stress-test-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1 
+    kind: Deployment 
+    name: stress-test
+  minReplicas: 1 
+  maxReplicas: 10 
+  metrics: 
+  - type: Resource
+    resource:
+      name: cpu 
+      target:
+        type: Utilization 
+        averageValue: 70
