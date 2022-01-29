@@ -11,7 +11,7 @@ spec:
     imagePullPolicy: IfNotPresent
   affinity:
       nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
+        requiredDuringSchedulingIgnoredDuringExecution: # Hard Affinity (rule)
           nodeSelectorTerms:
           - matchExpressions:
             - key: envtype      # Só cria o pod se o nó contém uma label envtype com o valor homolog ou test
@@ -19,7 +19,7 @@ spec:
               values:
               - homolog
               - test
-        preferredDuringSchedulingIgnoredDuringExecution:
+        preferredDuringSchedulingIgnoredDuringExecution: # Soft Affinity (preference)
         - weight: 1
           preference:
             matchExpressions:
