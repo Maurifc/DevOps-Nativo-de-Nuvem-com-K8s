@@ -1,0 +1,54 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  shared-volume-app
+  namespace: default
+  labels:
+    app:  shared-volume-app
+spec:
+  selector:
+    matchLabels:
+      app: shared-volume-app
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  shared-volume-app
+    spec:
+      containers:
+      # Container 1
+      - name:  cont-1
+        image:  busybox
+        volumeMounts:
+        - name: shared-dir
+          mountPath: /shared-dir
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          touch /shared-dir/create_by_container_1
+          tail -f /dev/null
+
+      # Container 2
+      - name:  cont-2
+        image:  busybox
+        volumeMounts:
+        - name: shared-dir
+          mountPath: /shared-dir
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          touch /shared-dir/create_by_container_2
+          tail -f /dev/null
+
+      volumes:
+        - name: shared-dir
+          emptyDir: {}
+      restartPolicy: Always
